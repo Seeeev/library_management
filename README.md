@@ -1,6 +1,8 @@
 # library_management
 
-A new Flutter project.
+![alt text](https://github.com/Seeeev/library_management/tree/main/assets/screenshots/login.png?raw=true)
+![alt text](https://github.com/Seeeev/library_management/tree/main/assets/screenshots/admin.png?raw=true)
+
 
 ## Getting Started
 
