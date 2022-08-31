@@ -24,7 +24,7 @@ class AuthPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Library Management System',
+                'LHS Library Management System',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontWeight: FontWeight.w900,
