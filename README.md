@@ -1,9 +1,7 @@
 # library_management
 
-![alt text](https://github.com/Seeeev/library_management/tree/main/assets/screenshots/login.png?raw=true)
-![alt text](https://github.com/Seeeev/library_management/tree/main/assets/screenshots/admin.png?raw=true)
-
-![alt login](https://github.com/Seeeev/library_management/blob/main/assets/screenshots/login.png?raw=true)
+!alt login(https://github.com/Seeeev/library_management/blob/main/assets/screenshots/login.png?raw=true)
+!alt admin(https://github.com/Seeeev/library_management/blob/main/assets/screenshots/admin.png?raw=true)
 
 ## Getting Started
 
