@@ -4,7 +4,7 @@ class InventoryModel {
   String? isbn;
   String? title;
   String? author;
-  DateTime? publication_date;
+  int? year_published;
   String? summary;
   int? qty;
 
@@ -12,7 +12,7 @@ class InventoryModel {
       {required this.isbn,
       required this.title,
       required this.author,
-      required this.publication_date,
+      required this.year_published,
       required this.summary,
       required this.qty});
 
@@ -21,7 +21,7 @@ class InventoryModel {
       'isbn': isbn,
       'title': title,
       'author': author,
-      'publication_date': publication_date,
+      'year_published': year_published,
       'summary': summary,
       'qty': qty
     };
@@ -40,7 +40,7 @@ class InventoryModel {
     isbn = json['isbn'];
     title = json['title'];
     author = json['author'];
-    publication_date = (json['publication_date'] as Timestamp).toDate();
+    year_published = int.parse(json['year_published']);
     summary = json['summary'];
     qty = int.parse(json['qty']);
   }

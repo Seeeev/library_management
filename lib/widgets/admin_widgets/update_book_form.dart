@@ -95,15 +95,23 @@ class UpdateBookForm extends StatelessWidget {
                     decoration: getDecoration('Author'),
                   ),
                   const SizedBox(height: 10),
-                  FormBuilderDateTimePicker(
-                    name: 'publication_date',
-                    inputType: InputType.date,
-                    decoration: const InputDecoration(
-                      fillColor: Colors.white,
-                      filled: true,
-                      labelText: 'Date Published',
-                      border: OutlineInputBorder(),
-                    ),
+                  // FormBuilderDateTimePicker(
+                  //   name: 'year_published',
+                  //   inputType: InputType.date,
+                  //   decoration: const InputDecoration(
+                  //     fillColor: Colors.white,
+                  //     filled: true,
+                  //     labelText: 'Year Published',
+                  //     border: OutlineInputBorder(),
+                  //   ),
+                  // ),
+                  FormBuilderTextField(
+                    name: 'year_published',
+                    decoration: getDecoration('Year Published'),
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(),
+                      FormBuilderValidators.integer(),
+                    ]),
                   ),
                   const SizedBox(height: 10),
                   FormBuilderTextField(
@@ -235,7 +243,7 @@ Future<void> confirmUpdate(
                 formKey.currentState!.patchValue({
                   'title': data.title,
                   'author': data.author,
-                  'publication_date': data.publication_date,
+                  'year_published': data.year_published,
                   'summary': data.summary,
                   'qty': data.qty.toString()
                 });

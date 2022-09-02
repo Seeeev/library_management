@@ -1,12 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:library_management/config/size_config.dart';
+
 import 'package:library_management/style/style.dart';
 import 'package:library_management/widgets/admin_widgets/table.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class InventoryTable extends StatelessWidget {
-  const InventoryTable({Key? key, required this.dataKey}) : super(key: key);
+  InventoryTable({Key? key, required this.dataKey}) : super(key: key);
 
   final GlobalKey dataKey;
 
@@ -48,7 +50,6 @@ class InventoryTable extends StatelessWidget {
           }
           if (snapshot.connectionState == ConnectionState.done ||
               snapshot.connectionState == ConnectionState.active) {
-            print('reset');
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

@@ -185,10 +185,15 @@ List<PlutoColumn> columns = [
   ),
 
   /// Select Column definition
+  // PlutoColumn(
+  //   title: 'Date Published',
+  //   field: 'date_field',
+  //   type: PlutoColumnType.date(),
+  // ),
   PlutoColumn(
-    title: 'Date Published',
-    field: 'date_field',
-    type: PlutoColumnType.date(),
+    title: 'Year Published',
+    field: 'published_field',
+    type: PlutoColumnType.number(format: '####'),
   ),
 
   PlutoColumn(
@@ -211,8 +216,10 @@ List<PlutoRow> processRows(AsyncSnapshot<QuerySnapshot<Object?>> snapshot) {
         'isbn_field': PlutoCell(value: doc.get('isbn')),
         'title_field': PlutoCell(value: doc.get('title')),
         'author_field': PlutoCell(value: doc.get('author')),
-        'date_field': PlutoCell(
-            value: (doc.get('publication_date') as Timestamp).toDate()),
+        'published_field': PlutoCell(value: doc.get('year_published')),
+        // 'published_field': PlutoCell(value: doc.get('date_published')),
+        // 'date_field': PlutoCell(
+        //     value: (doc.get('publication_date') as Timestamp).toDate()),
         'qty_field': PlutoCell(value: doc.get('qty')),
         'summary_field': PlutoCell(value: doc.get('summary'))
       });

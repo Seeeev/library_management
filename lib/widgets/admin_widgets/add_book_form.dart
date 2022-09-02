@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:get/get.dart';
 import 'package:library_management/models/inventory_model.dart';
 import 'package:library_management/style/colors.dart';
 import 'package:library_management/style/text_field_decoration.dart';
 import 'package:library_management/style/style.dart';
+import 'package:library_management/widgets/admin_widgets/inventory_table.dart';
 
 class AddBookForm extends StatelessWidget {
   final GlobalKey dataKey;
@@ -51,10 +53,18 @@ class AddBookForm extends StatelessWidget {
                   decoration: getDecoration('Author'),
                 ),
                 const SizedBox(height: 10),
-                FormBuilderDateTimePicker(
-                    name: 'publication_date',
-                    inputType: InputType.date,
-                    decoration: getDecoration('Publication Date')),
+                // FormBuilderDateTimePicker(
+                //     name: 'year_published',
+                //     inputType: InputType.date,
+                //     decoration: getDecoration('Publication Date')),
+                FormBuilderTextField(
+                  name: 'year_published',
+                  decoration: getDecoration('Year Published'),
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(),
+                    FormBuilderValidators.integer()
+                  ]),
+                ),
                 const SizedBox(height: 10),
                 FormBuilderTextField(
                   name: 'summary',
@@ -107,6 +117,7 @@ class AddBookForm extends StatelessWidget {
                           } else {
                             collectionReference
                                 .add(_formKey.currentState!.value);
+
                             showDialog(
                                 context: context,
                                 builder: (context) {
