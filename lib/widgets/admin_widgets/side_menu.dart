@@ -64,6 +64,10 @@ class SideMenu extends StatelessWidget {
                   iconData: Icons.delete,
                   dataKey: dataKeys![3],
                   toolTipMessage: 'Delete book'),
+              iconBuilder(
+                  iconData: Icons.person,
+                  dataKey: dataKeys![4],
+                  toolTipMessage: 'Add Student'),
 
               // iconBuilder(assetName: 'assets/pie-chart.svg', dataKey: dataKey!),
               // iconBuilder(assetName: 'assets/clipboard.svg', dataKey: dataKey!),

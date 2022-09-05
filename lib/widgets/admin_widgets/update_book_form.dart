@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:library_management/constants/book_genre.dart';
+import 'package:library_management/constants/book_status.dart';
 import 'package:library_management/controllers/admin_controller/update_book_controller.dart';
 import 'package:library_management/models/inventory_model.dart';
 import 'package:library_management/style/text_field_decoration.dart';
@@ -90,9 +92,34 @@ class UpdateBookForm extends StatelessWidget {
                     decoration: getDecoration('Title'),
                   ),
                   const SizedBox(height: 10),
+
+                  FormBuilderDropdown(
+                    name: 'genre',
+                    decoration: getDecoration('Genre'),
+                    // valueTransformer: (value) => (value as String).toLowerCase(),
+                    items: genre
+                        .map((String e) =>
+                            DropdownMenuItem(value: e, child: Text(e)))
+                        .toList(),
+                    initialValue: genre[0],
+                  ),
+
+                  const SizedBox(height: 10),
                   FormBuilderTextField(
                     name: 'author',
                     decoration: getDecoration('Author'),
+                  ),
+                  const SizedBox(height: 10),
+
+                  FormBuilderDropdown(
+                    name: 'book_status',
+                    decoration: getDecoration('Book Status'),
+                    // valueTransformer: (value) => (value as String).toLowerCase(),
+                    items: bookStatus
+                        .map((String e) =>
+                            DropdownMenuItem(value: e, child: Text(e)))
+                        .toList(),
+                    initialValue: bookStatus[0],
                   ),
                   const SizedBox(height: 10),
                   // FormBuilderDateTimePicker(
@@ -242,8 +269,10 @@ Future<void> confirmUpdate(
                 // set textfield data
                 formKey.currentState!.patchValue({
                   'title': data.title,
+                  'genre': data.genre,
                   'author': data.author,
-                  'year_published': data.year_published,
+                  'book_staus': data.book_status,
+                  'year_published': data.year_published.toString(),
                   'summary': data.summary,
                   'qty': data.qty.toString()
                 });

@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:library_management/style/colors.dart';
+import 'package:get/get.dart';
 
 class AppBarActionItem extends StatelessWidget {
   const AppBarActionItem({
@@ -32,19 +35,34 @@ class AppBarActionItem extends StatelessWidget {
         const SizedBox(
           width: 15,
         ),
-        Row(
-          children: const [
-            CircleAvatar(
-              radius: 17,
-              backgroundImage: NetworkImage(
-                  'https://cdn.shopify.com/s/files/1/0045/5104/9304/t/27/assets/AC_ECOM_SITE_2020_REFRESH_1_INDEX_M2_THUMBS-V2-1.jpg?v=8913815134086573859'),
-            ),
-            Icon(
-              Icons.arrow_drop_down_outlined,
-              color: AppColors.black,
+        PopupMenuButton(
+          itemBuilder: (context) => [
+            const PopupMenuItem(
+              value: 'signout',
+              child: Text('Sign Out'),
             )
           ],
-        )
+          onSelected: (value) async {
+            if (value == 'signout') {
+              await FirebaseAuth.instance.signOut();
+
+              Get.offNamed('/auth_page');
+            }
+          },
+          child: Row(
+            children: const [
+              CircleAvatar(
+                radius: 17,
+                backgroundImage: NetworkImage(
+                    'https://cdn.shopify.com/s/files/1/0045/5104/9304/t/27/assets/AC_ECOM_SITE_2020_REFRESH_1_INDEX_M2_THUMBS-V2-1.jpg?v=8913815134086573859'),
+              ),
+              Icon(
+                Icons.arrow_drop_down_outlined,
+                color: AppColors.black,
+              )
+            ],
+          ),
+        ),
       ],
     );
   }

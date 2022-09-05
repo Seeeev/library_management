@@ -3,7 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class InventoryModel {
   String? isbn;
   String? title;
+  String? genre;
   String? author;
+  String? book_status;
   int? year_published;
   String? summary;
   int? qty;
@@ -11,7 +13,9 @@ class InventoryModel {
   InventoryModel(
       {required this.isbn,
       required this.title,
+      required this.genre,
       required this.author,
+      required this.book_status,
       required this.year_published,
       required this.summary,
       required this.qty});
@@ -20,7 +24,9 @@ class InventoryModel {
     return {
       'isbn': isbn,
       'title': title,
+      'genre': genre,
       'author': author,
+      'book_status': book_status,
       'year_published': year_published,
       'summary': summary,
       'qty': qty
@@ -39,7 +45,9 @@ class InventoryModel {
   InventoryModel.fromJson(Map<String, dynamic> json) {
     isbn = json['isbn'];
     title = json['title'];
+    genre = json['genre'];
     author = json['author'];
+    book_status = json['book_status'];
     year_published = int.parse(json['year_published']);
     summary = json['summary'];
     qty = int.parse(json['qty']);

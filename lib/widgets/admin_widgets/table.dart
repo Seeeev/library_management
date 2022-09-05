@@ -177,10 +177,22 @@ List<PlutoColumn> columns = [
     type: PlutoColumnType.text(),
   ),
 
+  PlutoColumn(
+    title: 'Genre',
+    field: 'genre_field',
+    type: PlutoColumnType.text(),
+  ),
+
   /// Number Column definition
   PlutoColumn(
     title: 'Author',
     field: 'author_field',
+    type: PlutoColumnType.text(),
+  ),
+
+  PlutoColumn(
+    title: 'Book Status',
+    field: 'status_field',
     type: PlutoColumnType.text(),
   ),
 
@@ -215,7 +227,9 @@ List<PlutoRow> processRows(AsyncSnapshot<QuerySnapshot<Object?>> snapshot) {
       return PlutoRow(cells: {
         'isbn_field': PlutoCell(value: doc.get('isbn')),
         'title_field': PlutoCell(value: doc.get('title')),
+        'genre_field': PlutoCell(value: doc.get('genre')),
         'author_field': PlutoCell(value: doc.get('author')),
+        'status_field': PlutoCell(value: doc.get('book_status')),
         'published_field': PlutoCell(value: doc.get('year_published')),
         // 'published_field': PlutoCell(value: doc.get('date_published')),
         // 'date_field': PlutoCell(

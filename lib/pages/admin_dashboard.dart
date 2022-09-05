@@ -5,6 +5,7 @@ import 'package:data_tables/data_tables.dart';
 import 'package:library_management/config/responsive.dart';
 import 'package:library_management/config/size_config.dart';
 import 'package:library_management/style/colors.dart';
+import 'package:library_management/widgets/admin_widgets/add_user_form.dart';
 import 'package:library_management/widgets/admin_widgets/app_bar_action_item.dart';
 import 'package:library_management/widgets/admin_widgets/approvals.dart';
 import 'package:library_management/widgets/admin_widgets/dashboard_header.dart';
@@ -35,6 +36,7 @@ class AdminDashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+
     // DashboardController controller = Get.find<DashboardController>();
 
     SizeConfig().init(context);
@@ -95,6 +97,7 @@ class AdminDashboard extends StatelessWidget {
                     AddBookForm(dataKey: dataKeys[1]),
                     UpdateBookForm(dataKey: dataKeys[2]),
                     DeleteBookForm(dataKey: dataKeys[3]),
+                    AddStudentForm(dataKey: dataKeys[4])
                   ],
                 ),
               ),

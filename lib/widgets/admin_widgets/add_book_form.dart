@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
+import 'package:library_management/constants/book_genre.dart';
+import 'package:library_management/constants/book_status.dart';
 import 'package:library_management/models/inventory_model.dart';
 import 'package:library_management/style/colors.dart';
 import 'package:library_management/style/text_field_decoration.dart';
@@ -48,9 +51,34 @@ class AddBookForm extends StatelessWidget {
                     decoration: getDecoration('Title'),
                     validator: FormBuilderValidators.required()),
                 const SizedBox(height: 10),
+
+                FormBuilderDropdown(
+                  name: 'genre',
+                  decoration: getDecoration('Genre'),
+                  // valueTransformer: (value) => (value as String).toLowerCase(),
+                  items: genre
+                      .map((String e) =>
+                          DropdownMenuItem(value: e, child: Text(e)))
+                      .toList(),
+                  initialValue: genre[0],
+                ),
+                const SizedBox(height: 10),
+
                 FormBuilderTextField(
                   name: 'author',
                   decoration: getDecoration('Author'),
+                ),
+                const SizedBox(height: 10),
+
+                FormBuilderDropdown(
+                  name: 'book_status',
+                  decoration: getDecoration('Book Status'),
+                  // valueTransformer: (value) => (value as String).toLowerCase(),
+                  items: bookStatus
+                      .map((String e) =>
+                          DropdownMenuItem(value: e, child: Text(e)))
+                      .toList(),
+                  initialValue: bookStatus[0],
                 ),
                 const SizedBox(height: 10),
                 // FormBuilderDateTimePicker(
@@ -115,6 +143,10 @@ class AddBookForm extends StatelessWidget {
                                   );
                                 });
                           } else {
+                            // CollectionReference test =
+                            //     FirebaseFirestore.instance.collection('test');
+
+                            // test.add(_formKey.currentState!.value);
                             collectionReference
                                 .add(_formKey.currentState!.value);
 
