@@ -1,4 +1,5 @@
 var genre = [
+  'Uncategorized',
   'General Reference',
   'Reference',
   'Filipiniana',
@@ -8,13 +9,14 @@ var genre = [
   'Special Collection',
   'Rare Books',
   'Computer Internet Area',
-  'Uncategorized'
 ];
 
-var department = [
-  'Computer Studies',
-  'Education',
-  'Agriculture',
+var yearLevel = [
+  'Uncategorized',
+  'Grade 7',
+  'Grade 8',
+  'Grade 9',
+  'Grade 10',
   'Jr. High School',
   'Sr. High School',
 ];

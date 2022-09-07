@@ -97,7 +97,7 @@ class AdminDashboard extends StatelessWidget {
                     AddBookForm(dataKey: dataKeys[1]),
                     UpdateBookForm(dataKey: dataKeys[2]),
                     DeleteBookForm(dataKey: dataKeys[3]),
-                    AddStudentForm(dataKey: dataKeys[4])
+                    AddStudentForm(dataKey: dataKeys[4]),
                   ],
                 ),
               ),

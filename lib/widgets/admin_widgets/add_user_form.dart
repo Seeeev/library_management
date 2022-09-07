@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:get/get.dart';
 import 'package:library_management/constants/book_genre.dart';
+import 'package:library_management/controllers/admin_controller/add_user_form_controller.dart';
 import 'package:library_management/style/style.dart';
 import 'package:library_management/style/text_field_decoration.dart';
 
@@ -18,6 +20,7 @@ class AddStudentForm extends StatelessWidget {
   AddStudentForm({Key? key, required this.dataKey}) : super(key: key);
 
   final _formKey = GlobalKey<FormBuilderState>();
+  final _addUserController = Get.find<AddUserController>();
 
   @override
   Widget build(BuildContext context) {
@@ -67,9 +70,9 @@ class AddStudentForm extends StatelessWidget {
               Row(
                 children: [
                   generateDropDown(
-                      name: 'department',
-                      labelText: 'Department',
-                      items: department),
+                      name: 'year_level',
+                      labelText: 'Year Level',
+                      items: yearLevel),
                   const SizedBox(width: 5),
                   generateDropDown(
                       name: 'category', labelText: 'Category', items: category)
@@ -95,8 +98,16 @@ class AddStudentForm extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 5),
-                  generateTextField(
-                      name: 'email_address', labelText: 'Email Address'),
+                  Expanded(
+                    child: FormBuilderTextField(
+                      name: 'email_address',
+                      decoration: getDecoration('Email Address'),
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(),
+                        FormBuilderValidators.email(),
+                      ]),
+                    ),
+                  )
                 ],
               ),
               const SizedBox(height: 10),
@@ -122,29 +133,86 @@ class AddStudentForm extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   // Create account button
-                  TextButton(
-                    onPressed: () async {
-                      var isValidated =
-                          _formKey.currentState!.saveAndValidate();
+                  Obx(
+                    () => TextButton(
+                      onPressed: _addUserController.isEnabled.value == false
+                          ? null
+                          : () async {
+                              var isValidated =
+                                  _formKey.currentState!.saveAndValidate();
+                              // check form if complete and valid
+                              if (isValidated) {
+                                _addUserController.disableButton();
+                                var data = _formKey.currentState!.value;
 
-                      if (isValidated) {
-                        var data = _formKey.currentState!.value;
-                        var idNumber =
-                            _formKey.currentState!.value['id_number'];
+                                var idNumber = _formKey
+                                    .currentState!.value['id_number']
+                                    .toString();
+                                var emailAddress = _formKey
+                                    .currentState!.value['email_address'];
 
-                        await FirebaseFirestore.instance
-                            .collection('students')
-                            .doc(idNumber)
-                            .set(data);
+                                // check if user exists in the database
+                                var isValidUser = await validateUser(
+                                    idNumber: idNumber,
+                                    emailAddress: emailAddress);
 
-                        showConfimationInfo(context, data['first_name']);
-                      }
-                    },
-                    child: const PrimaryText(
-                      text: 'Create',
-                      size: 14.0,
-                      color: Colors.blueAccent,
-                      fontWeight: FontWeight.bold,
+                                if (isValidUser) {
+                                  await FirebaseFirestore.instance
+                                      .collection('students')
+                                      .doc(idNumber)
+                                      .set(data);
+
+                                  String firstName = _formKey
+                                      .currentState!.value['first_name']
+                                      .substring(0, 2)
+                                      .toUpperCase();
+                                  String month = _formKey
+                                      .currentState!.value['birth_date'].month
+                                      .toString()
+                                      .padLeft(2, '0');
+                                  String day = _formKey
+                                      .currentState!.value['birth_date'].day
+                                      .toString()
+                                      .padLeft(2, '0');
+                                  String year = _formKey
+                                      .currentState!.value['birth_date'].year
+                                      .toString();
+
+                                  var accountCreated = await createUserAccount(
+                                      emailAddress: emailAddress,
+                                      password: '$firstName$month$day$year');
+
+                                  if (accountCreated) {
+                                    showConfimationInfo(
+                                        context: context,
+                                        title: 'Success!',
+                                        content:
+                                            'Account successfuly created!');
+                                    _addUserController.enableButton();
+                                  } else {
+                                    showConfimationInfo(
+                                        context: context,
+                                        title: 'Failed!',
+                                        content:
+                                            'Account creation failed, email already taken!');
+                                    _addUserController.enableButton();
+                                  }
+                                } else {
+                                  showConfimationInfo(
+                                      context: context,
+                                      title: 'Failed!',
+                                      content:
+                                          'ID or email address already exists');
+                                  _addUserController.disableButton();
+                                }
+                              }
+                            },
+                      child: const PrimaryText(
+                        text: 'Create',
+                        size: 14.0,
+                        color: Colors.blueAccent,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   TextButton(
@@ -158,7 +226,7 @@ class AddStudentForm extends StatelessWidget {
                       color: Colors.blueAccent,
                       fontWeight: FontWeight.bold,
                     ),
-                  )
+                  ),
                 ],
               )
             ],
@@ -212,16 +280,16 @@ generateLibraryCard(context) {
   PdfPreview(build: (format) => pdf.save());
 }
 
-showConfimationInfo(context, name) {
+showConfimationInfo({context, title, content}) {
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      title: const PrimaryText(
-        text: 'Account Created!',
+      title: PrimaryText(
+        text: title,
         color: Colors.green,
       ),
       content: PrimaryText(
-        text: 'Account Sucessfuly created for $name',
+        text: content,
         size: 15,
       ),
       actions: [
@@ -233,4 +301,41 @@ showConfimationInfo(context, name) {
       ],
     ),
   );
+}
+
+Future<bool> validateUser({required idNumber, required emailAddress}) async {
+  var isValidUser = false;
+  try {
+    await FirebaseFirestore.instance
+        .collection('students')
+        .where('id_number', isEqualTo: idNumber)
+        .where('email_address', isEqualTo: emailAddress)
+        .get()
+        .then((value) {
+      isValidUser = true;
+    });
+  } on FirebaseAuthException catch (e) {
+    isValidUser = false;
+  }
+  return isValidUser;
+}
+
+Future<bool> createUserAccount(
+    {required String emailAddress, required String password}) async {
+  var isCreated = false;
+  try {
+    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailAddress, password: password);
+    isCreated = true;
+  } on FirebaseAuthException catch (e) {
+    if (e.code == 'weak-password') {
+      print('The password provided is too weak.');
+    } else if (e.code == 'email-already-in-use') {
+      print('The account already exists for that email.');
+    }
+    isCreated = false;
+  } catch (e) {
+    isCreated = false;
+  }
+  return isCreated;
 }

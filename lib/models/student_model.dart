@@ -3,7 +3,7 @@ class StudentModel {
   final String firstName;
   final String? middleName;
   final String lastName;
-  final String department;
+  final String yearLevel;
   final String category;
   final String address;
   final String phoneNumber;
@@ -12,7 +12,7 @@ class StudentModel {
 
   StudentModel({
     required this.idNumber,
-    required this.department,
+    required this.yearLevel,
     required this.category,
     required this.address,
     required this.phoneNumber,
@@ -29,7 +29,7 @@ class StudentModel {
       'first_name': firstName,
       'middle_name': middleName,
       'last_name': lastName,
-      'department': department,
+      'year_level': yearLevel,
       'category': category,
       'address': address,
       'phone_number': phoneNumber,
